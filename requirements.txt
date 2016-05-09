@@ -1,0 +1,8 @@
+# Production
+Flask
+Flask-SQLAlchemy
+flask-restful
+marshmallow
+
+# Development & Testing
+ipdb

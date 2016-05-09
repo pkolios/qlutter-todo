@@ -1,0 +1,8 @@
+Add cfg file for all configuration
+Add functional tests
+Add users / authentication
+Add filtering on get_list
+Add readme & installation help
+Add makefile
+Pin requirement versions
+Clean TODOs in code
