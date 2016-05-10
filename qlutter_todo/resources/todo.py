@@ -20,7 +20,7 @@ def todo_exists(f):
 
 
 class Todo(Resource):
-    decorators = [todo_exists, auth_required]
+    decorators = [todo_exists, auth_required]  # Applied from right to left
 
     def get(self, todo_id):
         data, errors = todo_schema.dump(

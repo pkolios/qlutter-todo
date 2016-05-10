@@ -49,4 +49,4 @@ class ToDoSchema(Schema):
     text = fields.Str(required=True)
     completed = fields.Boolean(missing=False)
     completed_on = fields.DateTime()
-    user = fields.Nested(UserSchema, required=False)  # TODO: required=True
+    user = fields.Nested(UserSchema, required=True, load_only=True)

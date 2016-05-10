@@ -1,8 +1,6 @@
-Add cfg file for all configuration
-Add functional tests
-Add users / authentication
+Add functional tests for todos
 Add filtering on get_list
 Add readme & installation help
-Add makefile
+Maybe add makefile
 Pin requirement versions
 Clean TODOs in code

@@ -28,6 +28,11 @@ class User(db.Model):
         except IntegrityError:
             raise UserAlreadyExists
 
+    @staticmethod
+    def delete(user):
+        db.session.delete(user)
+        db.session.commit()
+
     def add_token(self, token):
         token = Token(token, self)
         token.save()
