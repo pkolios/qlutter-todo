@@ -1,6 +1,6 @@
 from marshmallow import Schema, fields
 
-from qlutter_todo.models import db
+from qlutter_todo.extensions import db
 from qlutter_todo.models.user import UserSchema
 
 
@@ -13,15 +13,21 @@ class ToDo(db.Model):
     user = db.relationship('User', backref=db.backref('todos', lazy="dynamic"))
 
     @classmethod
-    def get_all(cls):
+    def get_all(cls, user=None):
+        if user:
+            return cls.query.filter_by(user=user)
         return cls.query.all()
 
     @classmethod
-    def get_by_id(cls, todo_id):
+    def get_by_id(cls, todo_id, user=None):
+        if user:
+            return cls.query.filter_by(id=todo_id, user=user).first()
         return cls.query.get(todo_id)
 
     @staticmethod
-    def create(todo):
+    def create(todo, user=None):
+        if user:
+            todo.user = user
         db.session.add(todo)
         db.session.commit()
 

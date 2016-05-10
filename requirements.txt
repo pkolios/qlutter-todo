@@ -1,5 +1,7 @@
 # Production
 Flask
+flask-bcrypt
+Flask-JWT
 Flask-SQLAlchemy
 flask-restful
 marshmallow
