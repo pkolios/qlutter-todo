@@ -8,11 +8,7 @@ from qlutter_todo.auth.utils import (
 from qlutter_todo.extensions import db, bcrypt
 
 app = Flask(__name__)
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
-app.config['SECRET_KEY'] = 'super-secret'
-app.config['JWT_AUTH_USERNAME_KEY'] = 'email'
-
+app.config.from_pyfile('application.cfg')
 db.init_app(app)
 bcrypt.init_app(app)
 jwt = JWT(app, authenticate, identity)
@@ -29,4 +25,4 @@ api.add_resource(todo.Todo, '/todos/<int:todo_id>')
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()  # TODO: Remove that
-    app.run(debug=True, host='0.0.0.0')
+    app.run(host=app.config.get('HOST'), port=app.config.get('PORT'))
