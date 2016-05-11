@@ -1,12 +1,14 @@
 # Production
-Flask
-flask-bcrypt
-Flask-JWT
-Flask-SQLAlchemy
-flask-restful
-marshmallow
-webargs
+apispec==0.11.1
+Flask==0.10.1
+Flask-Bcrypt==0.7.1
+Flask-JWT==0.3.2
+Flask-SQLAlchemy==2.1
+Flask-RESTful==0.3.5
+marshmallow==2.7.3
+webargs==1.3.2
+
 
 # Development & Testing
-pytest
-ipdb
+pytest==2.9.1
+ipdb==0.10.0

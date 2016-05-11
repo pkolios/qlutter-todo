@@ -1,5 +1,3 @@
 Add readme & installation help (https://apispec.readthedocs.io ?)
 Refactor using http://flask-marshmallow.readthedocs.io/en/latest/
-Maybe add makefile
-Pin requirement versions
 Clean TODOs in code
