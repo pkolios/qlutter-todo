@@ -5,6 +5,7 @@ Flask-JWT
 Flask-SQLAlchemy
 flask-restful
 marshmallow
+webargs
 
 # Development & Testing
 pytest

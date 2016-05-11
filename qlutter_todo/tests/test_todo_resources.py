@@ -9,6 +9,25 @@ def test_get_todos_successful(logged_client, todos):
         {'id': 2, 'text': 'Test2', 'completed': True, 'completed_on': None}]
 
 
+def test_get_todos_filtered_successful(logged_client, todos):
+    result = logged_client.get('/todos', query_string={'completed': True})
+    assert result.status_code == 200
+    assert result.json == [
+        {'id': 2, 'text': 'Test2', 'completed': True, 'completed_on': None}]
+
+
+@pytest.mark.parametrize("test_data, expected", [
+    ({'completed': 10}, 422),
+    ({'completed': 'random'}, 422),
+    ({'completed': 'true'}, 200),
+    ({'garbage': 'True'}, 200),
+    ({'user': 123}, 200),
+])
+def test_get_todos_filtered_invalid_query(logged_client, test_data, expected):
+    result = logged_client.get('/todos', query_string=test_data)
+    assert result.status_code == expected
+
+
 def test_get_todo_successful(logged_client, todos):
     result = logged_client.get('/todos/1')
     assert result.status_code == 200

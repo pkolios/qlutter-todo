@@ -1,5 +1,3 @@
-Add filtering on get_list
-Add functional tests for filtering
 Add readme & installation help (https://apispec.readthedocs.io ?)
 Refactor using http://flask-marshmallow.readthedocs.io/en/latest/
 Maybe add makefile

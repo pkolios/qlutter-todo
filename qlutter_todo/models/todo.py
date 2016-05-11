@@ -13,10 +13,14 @@ class ToDo(db.Model):
     user = db.relationship('User', backref=db.backref('todos', lazy="dynamic"))
 
     @classmethod
-    def get_all(cls, user=None):
+    def get_all(cls, user=None, filters=None):
+        if not user and not filters:
+            return cls.query.all()
+
+        filters = filters or {}
         if user:
-            return cls.query.filter_by(user=user)
-        return cls.query.all()
+            filters['user'] = user
+        return cls.query.filter_by(**filters)
 
     @classmethod
     def get_by_id(cls, todo_id, user=None):
