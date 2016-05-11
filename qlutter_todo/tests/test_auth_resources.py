@@ -1,7 +1,7 @@
 import pytest
 
 
-def test_register_successfull(client):
+def test_register_successful(client):
     data = {'email': 'test_register@example.org', 'password': 'sikret'}
     result = client.post('/register', json=data)
     assert result.status_code == 201

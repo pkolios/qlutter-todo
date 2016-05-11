@@ -5,6 +5,7 @@ import pytest
 
 from qlutter_todo.app import create_app
 from qlutter_todo.extensions import db as _db
+from qlutter_todo.models.todo import ToDo
 from qlutter_todo.models.user import User
 
 
@@ -70,19 +71,40 @@ def session(db, request):
     return session
 
 
+@pytest.fixture(scope='function')
+def user(request, session):
+    password = 'password'
+    user = User('test@example.org', password)
+    user.save()
+
+    def teardown():
+        User.delete(user)
+
+    request.addfinalizer(teardown)
+    return user.email, password
+
+
 @pytest.yield_fixture
-def api_client(app, session):
+def client(app, session):
     with app.test_client() as client:
-        yield client
+        yield Client(client)
 
 
 @pytest.yield_fixture
-def client(api_client):
-    yield Client(api_client)
+def logged_client(app, session, user):
+    email, password = user
+    with app.test_client() as client:
+        api_client = Client(client)
+        api_client.login(email, password)
+
+        yield api_client
+
+        api_client.logout()
 
 
 class Client(object):
     content_type = 'application/json'
+    access_token = None
 
     def __init__(self, client):
         self.client = client
@@ -96,6 +118,10 @@ class Client(object):
 
     def _prepare_request(self, *args, **kwargs):
         kwargs['content_type'] = self.content_type
+        if self.access_token:
+            kwargs['headers'] = kwargs.get('headers', {})
+            kwargs['headers']['Authorization'] = 'JWT {}'.format(
+                self.access_token)
         if kwargs.get('json'):
             kwargs['data'] = json.dumps(kwargs.pop('json'))
         return args, kwargs
@@ -105,15 +131,34 @@ class Client(object):
             response.json = json.loads(response.data)
         return response
 
+    def login(self, email, password):
+        data = {'email': email, 'password': password}
+        self.access_token = self.post('/auth', json=data).json.get(
+            'access_token')
+
+    def logout(self):
+        result = self.post('/logout')
+        self.access_token = None
+        assert result.status_code == 200
+
 
 @pytest.fixture(scope='function')
-def user(request, session):
-    password = 'password'
-    user = User('test@example.org', password)
-    user.save()
+def todos(request, user):
+    email, _ = user
+    user = User.get_by_email(email)
+    todos_data = [
+        {'text': 'Test1', 'completed': False},
+        {'text': 'Test2', 'completed': True}
+    ]
+    todos = []
+    for data in todos_data:
+        todo = ToDo(**data)
+        ToDo.create(todo, user)
+        todos.append(todo)
 
     def teardown():
-        User.delete(user)
+        for todo in todos:
+            ToDo.delete(todo)
 
     request.addfinalizer(teardown)
-    return user.email, password
+    return todos

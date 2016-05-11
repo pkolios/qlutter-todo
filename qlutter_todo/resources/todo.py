@@ -36,13 +36,13 @@ class Todo(Resource):
         json_data = request.get_json(force=True)
         if not json_data:
             abort(400, message="No input data provided")
-        data, errors = todo_schema.load(json_data)
+        data, errors = todo_schema.load(json_data, partial=('user',))
         if errors:
             abort(422, **errors)
         todo = ToDo.get_by_id(todo_id, current_identity)
         ToDo.update(todo, data)
         data, errors = todo_schema.dump(ToDo.get_by_id(todo.id))
-        return data, 201
+        return data, 200
 
 
 class TodoList(Resource):
@@ -56,7 +56,7 @@ class TodoList(Resource):
         json_data = request.get_json(force=True)
         if not json_data:
             abort(400, message="No input data provided")
-        data, errors = todo_schema.load(json_data)
+        data, errors = todo_schema.load(json_data, partial=('user',))
         if errors:
             abort(422, **errors)
         todo = ToDo(**data)
