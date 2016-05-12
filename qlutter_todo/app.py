@@ -1,13 +1,14 @@
 import os
 
 from flask import Flask
-from flask_restful import Api
 from flask_jwt import JWT
+from flask_restful import Api
 
 from qlutter_todo.resources import todo, auth
 from qlutter_todo.auth.utils import (
     authenticate, identity, auth_response_handler)
-from qlutter_todo.extensions import db, bcrypt
+from qlutter_todo.extensions import bcrypt, db
+from qlutter_todo.spec import build_spec
 
 
 def create_app(package_name, settings_override=None):
@@ -28,6 +29,9 @@ def create_app(package_name, settings_override=None):
     api.add_resource(auth.Logout, '/logout')
     api.add_resource(todo.TodoList, '/todos')
     api.add_resource(todo.Todo, '/todos/<int:todo_id>')
+
+    app = build_spec(app)
+
     return app
 
 

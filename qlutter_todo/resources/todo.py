@@ -30,6 +30,24 @@ def handle_request_parsing_error(errors):
 
 
 class Todo(Resource):
+    """
+    ---
+    get:
+        responses:
+            200:
+                schema:
+                    $ref: '#/definitions/Todo'
+    put:
+        responses:
+            200:
+                schema:
+                    $ref: '#/definitions/Todo'
+    delete:
+        responses:
+            200:
+                message:
+                    Todo deleted
+    """
     decorators = [todo_exists, auth_required]  # Applied from right to left
 
     def get(self, todo_id):
@@ -56,6 +74,19 @@ class Todo(Resource):
 
 
 class TodoList(Resource):
+    """
+    ---
+    get:
+        responses:
+            200:
+                schema:
+                    $ref: '#/definitions/Todo'
+    post:
+        responses:
+            201:
+                schema:
+                    $ref: '#/definitions/Todo'
+    """
     decorators = [auth_required]
 
     get_args = {
