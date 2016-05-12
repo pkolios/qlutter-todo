@@ -63,6 +63,12 @@ You can execute the test suite using the command:
     py.test
 
 
+API Documentation
+=================
+
+The API is documented using the OpenAPI specification. Make sure ``SWAGGER = True`` in the ``application.cfg``.
+With the API running, visit http://your_api_domain/static/index.html?url=/spec
+
 License
 -------
 

@@ -1,3 +1,4 @@
-Add readme & installation help (https://apispec.readthedocs.io ?)
+Document authentication process
 Refactor using http://flask-marshmallow.readthedocs.io/en/latest/
 Clean TODOs in code
+Document how to run in production

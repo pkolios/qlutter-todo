@@ -30,7 +30,8 @@ def create_app(package_name, settings_override=None):
     api.add_resource(todo.TodoList, '/todos')
     api.add_resource(todo.Todo, '/todos/<int:todo_id>')
 
-    app = build_spec(app)
+    if app.config.get('SWAGGER'):
+        app = build_spec(app)
 
     return app
 
